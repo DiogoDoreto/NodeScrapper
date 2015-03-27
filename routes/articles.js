@@ -5,7 +5,12 @@ var router = express.Router();
 
 /* GET articles listing. */
 router.get(/\/(.+)/, function(req, res, next) {
-  Article.find({site_id: req.params[0]}).exec(function (err, articles) {
+  var q_opts = {site_id: req.params[0]};
+  if (req.query.query) {
+    q_opts['$text'] = {'$search': req.query.query};
+  }
+
+  Article.find(q_opts).exec(function (err, articles) {
     if (err) res.send(err);
 
     res.send(articles);

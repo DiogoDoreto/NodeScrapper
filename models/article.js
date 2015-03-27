@@ -10,8 +10,14 @@ var articleSchema = mongoose.Schema({
     twitter: String,
   },
   content: String,
+  content_html: String,
   date: Date,
   image: String
+});
+
+articleSchema.index({
+  title: 'text',
+  content: 'text'
 });
 
 articleSchema.virtual('url').get(function () {

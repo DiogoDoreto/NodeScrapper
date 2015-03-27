@@ -33,6 +33,7 @@ var request = require('request');
 //         twitter: 'http://twitter.com/john'
 //       }
 //       content: 'Full content'
+//       content_html: 'Full HTML content'
 //       date: 'Posted date'
 //       image: 'http://'
 //     },
@@ -148,7 +149,8 @@ var Parser = function (url, onsuccess, onerror) {
         url: responseData.siteInfo.url + article.find('a[rel=author]').attr('href'),
         twitter: article.find('span.twitter-handle a').attr('href')
       };
-      data.content = article.find('.article-entry').html();
+      data.content = article.find('.article-entry').text();
+      data.content_html = article.find('.article-entry').html();
       data.date = article.find('time').attr('datetime');
       data.image = article.find('img.img-hero').attr('src');
 
