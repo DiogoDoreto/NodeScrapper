@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var articleSchema = mongoose.Schema({
   _id: String,
+  site_id: String,
   title: String,
   author: {
     name: String,
