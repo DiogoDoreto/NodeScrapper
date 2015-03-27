@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 var sites = require('./routes/sites');
 var articles = require('./routes/articles');
+var writers = require('./routes/writers');
 
 var app = express();
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/sites', sites);
 app.use('/articles', articles);
+app.use('/writers', writers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
