@@ -2,20 +2,44 @@
 
 var parser = require('../parser');
 var debug = require('debug')('NodeScrapper:scrapper');
+var processResult = require('../processScrapperResult');
+var mongoose = require('mongoose');
 
-// Set scrapper interval (default: 1h)
+/**
+ * Connect to database
+ */
+
+var db_path = process.env.DB_PATH;
+if (!db_path) {
+  debug('ERROR: Missing $DB_PATH environment variable');
+  process.exit(1);
+}
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(db_path);
+  mongoose.connection.on('error', function (err) {
+    debug('ERROR:', err);
+  });
+}
+
+/**
+ * Set scrapper interval (default: 1h)
+ */
+
 var interval = parseInt(process.env.INTERVAL || '3600000', 10)
+
+/**
+ * Run the scrapper
+ */
 
 function run () {
   debug('Started scrapper');
 
-  parser('http://techcrunch.com', function (data) {
-    console.log(data);
-  }, function (err) {
+  parser('http://techcrunch.com', processResult, function (err) {
     console.error(err);
   });
 }
 
-
-setInterval(run, interval);
-run();
+mongoose.connection.once('open', function () {
+  setInterval(run, interval);
+  run();
+});

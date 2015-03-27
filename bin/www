@@ -7,6 +7,22 @@
 var app = require('../app');
 var debug = require('debug')('NodeScrapper:server');
 var http = require('http');
+var mongoose = require('mongoose');
+
+/**
+ * Connect to database
+ */
+var db_path = process.env.DB_PATH;
+if (!db_path) {
+  debug('ERROR: Missing $DB_PATH environment variable');
+  process.exit(1);
+}
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(db_path);
+  mongoose.connection.on('error', function (err) {
+    debug('ERROR:', err);
+  });
+}
 
 /**
  * Get port from environment and store in Express.
@@ -25,9 +41,11 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+mongoose.connection.once('open', function () {
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+});
 
 /**
  * Normalize a port into a number, string, or false.
