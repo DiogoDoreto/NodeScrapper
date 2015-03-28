@@ -1,5 +1,7 @@
 # NodeScrapper
 
+[![Build Status](https://travis-ci.org/DiogoDoreto/NodeScrapper.svg?branch=master)](https://travis-ci.org/DiogoDoreto/NodeScrapper)
+
 A simple [Node.js](http://nodejs.org/) application for scrapping [TechCrunch](http://techcrunch.com) website, saving its articles on home page to a [MongoDB](http://mongodb.org/) database and exposing a REST API for querying.
 
 ## REST API
