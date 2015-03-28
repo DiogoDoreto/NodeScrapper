@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var parser = require('../parser');
+var Parser = require('../parser');
 var debug = require('debug')('NodeScrapper:scrapper');
 var processResult = require('../processScrapperResult');
 var mongoose = require('mongoose');
@@ -34,7 +34,9 @@ var interval = parseInt(process.env.INTERVAL || '3600000', 10)
 function run () {
   debug('Started scrapper');
 
-  parser('http://techcrunch.com', processResult, function (err) {
+  var p = new Parser('http://techcrunch.com')
+
+  p.start().then(processResult, function (err) {
     console.error(err);
   });
 }
