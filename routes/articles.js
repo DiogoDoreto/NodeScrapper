@@ -10,7 +10,11 @@ router.get(/\/(.+)/, function(req, res, next) {
     q_opts['$text'] = {'$search': req.query.query};
   }
 
-  Article.find(q_opts).limit(20).exec(function (err, articles) {
+  var limit = 20;
+  var page = parseInt(req.query.page || '1', 10);
+  if (isNaN(page) || page < 1) page = 1;
+
+  Article.find(q_opts).limit(limit).skip((page-1)*limit).exec(function (err, articles) {
     if (err) res.send(err);
 
     res.send(articles);
