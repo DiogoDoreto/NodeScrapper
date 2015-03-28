@@ -10,7 +10,7 @@ router.get(/\/(.+)/, function(req, res, next) {
     q_opts['$text'] = {'$search': req.query.query};
   }
 
-  Article.find(q_opts).exec(function (err, articles) {
+  Article.find(q_opts).limit(20).exec(function (err, articles) {
     if (err) res.send(err);
 
     res.send(articles);
